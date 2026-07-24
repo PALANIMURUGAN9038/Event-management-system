@@ -4,6 +4,7 @@ import com.eventmanagementsystem.eventmanagementsystem.entity.Event;
 import com.eventmanagementsystem.eventmanagementsystem.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.eventmanagementsystem.eventmanagementsystem.exception.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,12 +26,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event getEventById(Long id) {
-        return repository.findById(id).orElse(null);
+    public Event getEventById(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Event Not Found"));
     }
 
     @Override
-    public Event updateEvent(Long id, Event event) {
+    public Event updateEvent(Integer id, Event event) {
         Event existing = repository.findById(id).orElse(null);
 
         if (existing != null) {
@@ -45,7 +49,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void deleteEvent(Long id) {
+    public void deleteEvent(Integer id) {
         repository.deleteById(id);
     }
 

@@ -29,19 +29,19 @@ public class EventController {
 
     // Get Event by ID
     @GetMapping("/{id}")
-    public Event getEventById(@PathVariable Long id) {
+    public Event getEventById(@PathVariable Integer id) {
         return service.getEventById(id);
     }
 
     // Update Event
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event event) {
+    public Event updateEvent(@PathVariable Integer id, @RequestBody Event event) {
         return service.updateEvent(id, event);
     }
 
     // Delete Event
     @DeleteMapping("/{id}")
-    public String deleteEvent(@PathVariable Long id) {
+    public String deleteEvent(@PathVariable Integer id) {
         service.deleteEvent(id);
         return "Event deleted successfully";
     }

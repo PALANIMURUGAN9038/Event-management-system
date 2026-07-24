@@ -10,11 +10,12 @@ public interface EventService {
 
     List<Event> getAllEvents();
 
-    Event getEventById(Long id);
+    Event getEventById(Integer id);
 
-    Event updateEvent(Long id, Event event);
+    Event updateEvent(Integer id, Event event);
 
-    void deleteEvent(Long id);
+    void deleteEvent(Integer id);
+
 
     List<Event> getByCategory(String category);
 

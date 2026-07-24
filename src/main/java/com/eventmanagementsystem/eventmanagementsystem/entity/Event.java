@@ -9,7 +9,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long eventID;
+    private Integer eventID;
 
     private String name;
     private String category;
@@ -18,11 +18,11 @@ public class Event {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    private Long organizerID;
+    private Integer organizerID;
 
     // Getters & Setters
-    public Long getEventID() { return eventID; }
-    public void setEventID(Long eventID) { this.eventID = eventID; }
+    public Integer getEventID() { return eventID; }
+    public void setEventID( Integer eventID) { this.eventID = eventID; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -36,6 +36,6 @@ public class Event {
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
 
-    public Long getOrganizerID() { return organizerID; }
-    public void setOrganizerID(Long organizerID) { this.organizerID = organizerID; }
+    public Integer getOrganizerID() { return organizerID; }
+    public void setOrganizerID(Integer organizerID) { this.organizerID = organizerID; }
 }
