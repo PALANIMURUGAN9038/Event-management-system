@@ -4,6 +4,7 @@ import com.eventmanagementsystem.eventmanagementsystem.entity.User;
 import com.eventmanagementsystem.eventmanagementsystem.exception.ResourceNotFoundException;
 import com.eventmanagementsystem.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User createUser(User user) {
+
+        user.setPassword(
+                passwordEncoder.encode(
+                        user.getPassword()));
+
         return repository.save(user);
     }
 
@@ -37,18 +46,30 @@ public class UserServiceImpl implements UserService {
 
         User existing = repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User Not Found"));
+                        new ResourceNotFoundException(
+                                "User Not Found"));
 
         existing.setName(user.getName());
         existing.setEmail(user.getEmail());
-        existing.setPassword(user.getPassword());
-        existing.setContactNumber(user.getContactNumber());
+
+        existing.setPassword(
+                passwordEncoder.encode(
+                        user.getPassword()));
+
+        existing.setContactNumber(
+                user.getContactNumber());
 
         return repository.save(existing);
     }
 
     @Override
     public void deleteUser(Integer id) {
+
+        repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User Not Found"));
+
         repository.deleteById(id);
     }
 
@@ -57,10 +78,15 @@ public class UserServiceImpl implements UserService {
 
         User user = repository.findByEmail(email)
                 .orElseThrow(() ->
-                        new RuntimeException("Invalid Email"));
+                        new RuntimeException(
+                                "Invalid Email"));
 
-        if (!user.getPassword().equals(password)) {
-            throw new RuntimeException("Invalid Password");
+        if (!passwordEncoder.matches(
+                password,
+                user.getPassword())) {
+
+            throw new RuntimeException(
+                    "Invalid Password");
         }
 
         return user;

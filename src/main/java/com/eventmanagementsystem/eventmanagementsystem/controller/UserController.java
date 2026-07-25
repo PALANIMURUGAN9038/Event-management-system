@@ -1,5 +1,5 @@
 package com.eventmanagementsystem.eventmanagementsystem.controller;
-
+import jakarta.validation.Valid;
 import com.eventmanagementsystem.eventmanagementsystem.entity.User;
 import com.eventmanagementsystem.eventmanagementsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         return service.createUser(user);
     }
 
@@ -32,7 +32,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Integer id,
-                           @RequestBody User user) {
+                           @Valid @RequestBody User user) {
         return service.updateUser(id, user);
     }
 

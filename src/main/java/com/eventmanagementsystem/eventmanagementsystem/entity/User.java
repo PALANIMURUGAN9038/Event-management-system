@@ -1,6 +1,10 @@
 package com.eventmanagementsystem.eventmanagementsystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "User")
@@ -10,13 +14,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
 
+    @NotBlank(message = "Name is required")
     private String name;
 
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email is required")
     @Column(unique = true)
     private String email;
 
+    @Size(
+            min = 5,
+            message = "Password must be at least 5 characters"
+    )
     private String password;
 
+    @Pattern(
+            regexp = "^[0-9]{10}$",
+            message = "Contact number must contain exactly 10 digits"
+    )
     private String contactNumber;
 
     public Integer getUserID() {

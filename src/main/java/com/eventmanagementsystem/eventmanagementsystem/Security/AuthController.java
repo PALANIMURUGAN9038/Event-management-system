@@ -3,6 +3,7 @@ package com.eventmanagementsystem.eventmanagementsystem.Security;
 import com.eventmanagementsystem.eventmanagementsystem.entity.User;
 import com.eventmanagementsystem.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,9 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public String login(
             @RequestBody AuthRequest request) {
@@ -25,13 +29,15 @@ public class AuthController {
                         new RuntimeException(
                                 "Invalid Email"));
 
-        if (!user.getPassword()
-                .equals(request.getPassword())) {
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword())) {
 
             throw new RuntimeException(
                     "Invalid Password");
         }
 
-        return jwtUtil.generateToken(user.getEmail());
+        return jwtUtil.generateToken(
+                user.getEmail());
     }
 }
