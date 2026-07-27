@@ -19,6 +19,17 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @PostMapping("/register")
+    public User register(
+            @RequestBody User user) {
+
+        user.setPassword(
+                passwordEncoder.encode(
+                        user.getPassword()));
+
+        return repository.save(user);
+    }
+
     @PostMapping("/login")
     public String login(
             @RequestBody AuthRequest request) {
