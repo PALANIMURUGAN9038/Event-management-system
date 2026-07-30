@@ -43,11 +43,4 @@ public class UserController {
 
         return "User deleted successfully";
     }
-
-    @PostMapping("/login")
-    public User login(@RequestParam String email,
-                      @RequestParam String password) {
-
-        return service.login(email, password);
-    }
 }
