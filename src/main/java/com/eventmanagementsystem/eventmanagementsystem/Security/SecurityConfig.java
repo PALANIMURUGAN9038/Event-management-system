@@ -14,10 +14,10 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
+
     @Bean
-    public PasswordEncoder passwordEncoder()
-    {
-    return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -29,16 +29,30 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // Public Endpoints
                         .requestMatchers(
-                                "/auth/**"
-                        ).permitAll()
-
-                        .requestMatchers(
-                                "/api/users",
-                                "/api/users/**",
+                                "/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
-                        ).permitAll()
+                        )
+                        .permitAll()
+
+                        // ADMIN Only
+                        .requestMatchers(
+                                "/api/users/**"
+                        )
+                        .hasRole("ADMIN")
+
+                        // ADMIN and USER
+                        .requestMatchers(
+                                "/api/events/**",
+                                "/api/tickets/**",
+                                "/api/feedback/**",
+                                "/api/notification/**"
+                        )
+                        .hasAnyRole("ADMIN", "USER")
+
+                        // Any Other Request
                         .anyRequest()
                         .authenticated()
                 )

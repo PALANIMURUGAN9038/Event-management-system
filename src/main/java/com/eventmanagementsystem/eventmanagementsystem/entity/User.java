@@ -34,6 +34,8 @@ public class User {
     )
     private String contactNumber;
 
+    private String role;
+
     public Integer getUserID() {
         return userID;
     }
@@ -72,5 +74,13 @@ public class User {
 
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

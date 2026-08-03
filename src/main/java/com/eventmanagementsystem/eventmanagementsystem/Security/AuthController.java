@@ -23,6 +23,15 @@ public class AuthController {
     public User register(
             @RequestBody User user) {
 
+        if (repository.findByEmail(
+                user.getEmail()).isPresent()) {
+
+            throw new RuntimeException(
+                    "Email already exists");
+        }
+
+        user.setRole("USER");
+
         user.setPassword(
                 passwordEncoder.encode(
                         user.getPassword()));
